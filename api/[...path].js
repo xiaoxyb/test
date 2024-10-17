@@ -2,7 +2,7 @@ const TARGET_BASE_URL = 'https://api.replicate.com';
 
 export default async function handler(req, res) {
   const { method, headers, body } = req;
-  const path = req.query.path.join('/'); // 获取路径部分
+  const path = req.query.path ? req.query.path.join('/') : ''; // 获取路径
   const targetUrl = `${TARGET_BASE_URL}/${path}`; // 拼接目标地址
 
   try {
@@ -10,7 +10,7 @@ export default async function handler(req, res) {
       method,
       headers: {
         ...headers,
-        host: new URL(TARGET_BASE_URL).host, // 修正 host 头
+        host: new URL(TARGET_BASE_URL).host,
       },
       body: method !== 'GET' && method !== 'HEAD' ? JSON.stringify(body) : undefined,
     });
